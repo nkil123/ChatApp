@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from "react";
 import ScrollToBottom from "react-scroll-to-bottom";
+import {
+  Badge,
+  Image,
+  Box,
+  Heading,
+  WrapItem,
+  Avatar,
+  Wrap
+} from "@chakra-ui/react";
 
 function Chat({ socket, username, room }) {
   const [currentMessage, setCurrentMessage] = useState("");
@@ -31,10 +40,16 @@ function Chat({ socket, username, room }) {
 
   return (
     <div className="chat-window">
-      <div className="chat-header">
-        <p>Live Chat</p>
-      </div>
+      <Box p="2" bg="#151D3B" color="white">
+        <WrapItem p="2" alignItems="center">
+          <Avatar name="Dan Abrahmov" src="https://bit.ly/dan-abramov" />
+          <Heading size="md" ml="4">
+            {username}
+          </Heading>
+        </WrapItem>
+      </Box>
       <div className="chat-body">
+        {/* <div height="300px" border="2px solid black"> */}
         <ScrollToBottom className="message-container">
           {messageList.map((messageContent) => {
             return (
@@ -56,6 +71,7 @@ function Chat({ socket, username, room }) {
           })}
         </ScrollToBottom>
       </div>
+      {/* </div> */}
       <div className="chat-footer">
         <input
           type="text"
