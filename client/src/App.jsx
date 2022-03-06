@@ -1,6 +1,7 @@
 import "./App.css";
 import io from "socket.io-client";
 import { useState } from "react";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import Chat from "./Components/Chat";
 
 const socket = io.connect("https://obscure-fjord-30128.herokuapp.com/");
@@ -9,16 +10,25 @@ function App() {
   const [username, setUsername] = useState("");
   const [room, setRoom] = useState("");
   const [showChat, setShowChat] = useState(false);
-
+  const navigate = useNavigate();
   const joinRoom = () => {
     if (username !== "" && room !== "") {
       socket.emit("join_room", room);
-      setShowChat(true);
+      navigate(`/chat/${username}`);
     }
   };
 
   return (
     <div className="App">
+      <Routes>
+        {/* <Route path='/' element={<PrivateRoute> <Home /> </PrivateRoute>} /> */}
+        <Route
+          path="/chat/:username"
+          element={<Chat socket={socket} username={username} room={room} />}
+        />
+        {/* <Route path='/login' element={<Login />} /> */}
+      </Routes>
+
       {!showChat ? (
         <div className="joinChatContainer">
           <h3>Join A Chat</h3>
@@ -38,9 +48,8 @@ function App() {
           />
           <button onClick={joinRoom}>Join A Room</button>
         </div>
-      ) : (
-        <Chat socket={socket} username={username} room={room} />
-      )}
+      ) : // <Chat socket={socket} username={username} room={room} />
+      null}
     </div>
   );
 }
