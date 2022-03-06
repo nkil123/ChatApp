@@ -3,53 +3,17 @@ import io from "socket.io-client";
 import { useState } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import Chat from "./Components/Chat";
-
-const socket = io.connect("https://obscure-fjord-30128.herokuapp.com/");
+import { Home } from "./Components/Home";
+// const socket = io.connect("https://obscure-fjord-30128.herokuapp.com/");
+const socket = io.connect("http://localhost:3001");
 
 function App() {
-  const [username, setUsername] = useState("");
-  const [room, setRoom] = useState("");
-  const [showChat, setShowChat] = useState(false);
-  const navigate = useNavigate();
-  const joinRoom = () => {
-    if (username !== "" && room !== "") {
-      socket.emit("join_room", room);
-      navigate(`/chat/${username}`);
-    }
-  };
-
   return (
     <div className="App">
       <Routes>
-        {/* <Route path='/' element={<PrivateRoute> <Home /> </PrivateRoute>} /> */}
-        <Route
-          path="/chat/:username"
-          element={<Chat socket={socket} username={username} room={room} />}
-        />
-        {/* <Route path='/login' element={<Login />} /> */}
+        <Route path="/" element={<Home />} />
+        <Route path="/:room/:username" element={<Chat />} />
       </Routes>
-
-      {!showChat ? (
-        <div className="joinChatContainer">
-          <h3>Join A Chat</h3>
-          <input
-            type="text"
-            placeholder="John..."
-            onChange={(event) => {
-              setUsername(event.target.value);
-            }}
-          />
-          <input
-            type="text"
-            placeholder="Room ID..."
-            onChange={(event) => {
-              setRoom(event.target.value);
-            }}
-          />
-          <button onClick={joinRoom}>Join A Room</button>
-        </div>
-      ) : // <Chat socket={socket} username={username} room={room} />
-      null}
     </div>
   );
 }

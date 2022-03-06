@@ -9,8 +9,14 @@ import {
   Avatar,
   Wrap
 } from "@chakra-ui/react";
-
+import io from "socket.io-client";
+import { useParams } from "react-router-dom";
+// const socket = io.connect("https://obscure-fjord-30128.herokuapp.com/");
+// const socket = io.connect("https://obscure-fjord-30128.herokuapp.com/");
 function Chat({ socket, username, room }) {
+  // const socket = io.connect("http://localhost:3001");
+  // const { room } = useParams();
+  console.log(room, username, socket);
   const [currentMessage, setCurrentMessage] = useState("");
   const [messageList, setMessageList] = useState([]);
 
@@ -37,7 +43,7 @@ function Chat({ socket, username, room }) {
       setMessageList((list) => [...list, data]);
     });
   }, [socket]);
-
+  console.log(messageList);
   return (
     <div className="chat-window">
       <Box p="2" bg="#151D3B" color="white">
